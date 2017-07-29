@@ -1,0 +1,16 @@
+body{
+	background-image: url('../images/bgd1.png');
+}
+
+canvas {
+	margin: auto;
+}
+
+#title-text{
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+}
+
+.description{
+	text-align:left; display:inline-block; width:640px
+}
