@@ -46,33 +46,116 @@ function movePlayerToIndex(newPlayerLinearIndex){
 		levelCompleted();
 	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 1){
-		return;
+		return -1;
 	}
 	
 	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
 	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
 	charger.game.playerLinearIndex = newPlayerLinearIndex;
+	
+	var numberOfPlacesPlayerCanMoveTo = 0;
+	if(canPlayerMoveTo(newPlayerLinearIndex - 1)){numberOfPlacesPlayerCanMoveTo++}
+	if(canPlayerMoveTo(newPlayerLinearIndex + 1)){numberOfPlacesPlayerCanMoveTo++}
+	if(canPlayerMoveTo(newPlayerLinearIndex + 40)){numberOfPlacesPlayerCanMoveTo++}
+	if(canPlayerMoveTo(newPlayerLinearIndex - 40)){numberOfPlacesPlayerCanMoveTo++}
+
+	return numberOfPlacesPlayerCanMoveTo;
 }
 
 function jumpPlayer(){
 	
 }
 
-function movePlayer(direction){
-	//charger.game.player = charger.game.add.sprite(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'player');
-	if(direction === 'up'){
-		movePlayerToIndex(charger.game.playerLinearIndex - 40);
-	} else if(direction === 'down'){
-		movePlayerToIndex(charger.game.playerLinearIndex + 40);
-	} else if(direction === 'left'){
-		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
-		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex - 1)/40);
-		var indexToMoveTo = charger.game.playerLinearIndex - 1;
-		if(oldIndexY != tempNewIndexY){
-				indexToMoveTo = charger.game.playerLinearIndex + 36;
+function canPlayerMoveTo(playerLinearIndex, verbose){
+	if(playerLinearIndex > 1119){
+		playerLinearIndex = playerLinearIndex - 1120;
+	} else if(playerLinearIndex < 0){
+		var x = playerLinearIndex % 40;
+		var y = Math.floor(Math.abs(playerLinearIndex/40));
+		playerLinearIndex = (1120 - (y * 40)) + x;
+	}
+	
+	if(verbose){
+		var numberOfPlacesPlayerCanMoveTo = 0;
+		if(canPlayerMoveTo(playerLinearIndex - 1)){numberOfPlacesPlayerCanMoveTo++}
+		if(canPlayerMoveTo(playerLinearIndex + 1)){numberOfPlacesPlayerCanMoveTo++}
+		if(canPlayerMoveTo(playerLinearIndex + 40)){numberOfPlacesPlayerCanMoveTo++}
+		if(canPlayerMoveTo(playerLinearIndex - 40)){numberOfPlacesPlayerCanMoveTo++}
+		if(numberOfPlacesPlayerCanMoveTo > 2){
+			return false;
 		}
-		movePlayerToIndex(indexToMoveTo);
+	}
+	if((charger.game.levels[charger.game.currentLevelIndex])[playerLinearIndex] === 1){
+		console.log("RETURNING FALSE");
+		return false;
+	}
+	console.log("RETURNING TRUE");
+	return true;
+}
+
+function movePlayer(direction){
+	if(direction === 'up'){
+		var run = true;
+		while(run){
+			var numberOfRoutes = movePlayerToIndex(charger.game.playerLinearIndex - 40); 
+			if(numberOfRoutes < 0){
+				run = false;
+				return;
+			}
+			if(numberOfRoutes > 2){
+				run = false;
+			}
+		}
+		
+	} else if(direction === 'down'){
+		var run = true;
+		while(run){
+			var numberOfRoutes = movePlayerToIndex(charger.game.playerLinearIndex + 40); 
+			if(numberOfRoutes < 0){
+				run = false;
+				return;
+			}
+			if(numberOfRoutes > 2){
+				run = false;
+			}
+		}
+	} else if(direction === 'left'){
+		var run = true;
+		while(run){
+			var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+			var tempNewIndexY = Math.floor((charger.game.playerLinearIndex - 1)/40);
+			var indexToMoveTo = charger.game.playerLinearIndex - 1;
+			if(oldIndexY != tempNewIndexY){
+					indexToMoveTo = charger.game.playerLinearIndex + 36;
+			}
+			var numberOfRoutes =  movePlayerToIndex(indexToMoveTo);
+			if(numberOfRoutes < 0){
+				run = false;
+				return;
+			}
+			if(numberOfRoutes > 2){
+				run = false;
+			}
+		}
 	} else if(direction === 'right'){
+		var run = true;
+		while(run){
+			var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+			var tempNewIndexY = Math.floor((charger.game.playerLinearIndex + 1)/40);
+			var indexToMoveTo = charger.game.playerLinearIndex + 1;
+			if(oldIndexY != tempNewIndexY){
+					indexToMoveTo = charger.game.playerLinearIndex - 36;
+			}
+			var numberOfRoutes =  movePlayerToIndex(indexToMoveTo);
+			if(numberOfRoutes < 0){
+				run = false;
+				return;
+			}
+			if(numberOfRoutes > 2){
+				run = false;
+			}
+		}
+		/*
 		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
 		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex + 1)/40);
 		var indexToMoveTo = charger.game.playerLinearIndex + 1;
@@ -80,6 +163,7 @@ function movePlayer(direction){
 				indexToMoveTo = charger.game.playerLinearIndex - 36;
 		}
 		movePlayerToIndex(indexToMoveTo);
+		*/
 	}
 }
 
