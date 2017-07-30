@@ -35,15 +35,17 @@ function levelCompleted(){
 
 
 function movePlayerToIndex(newPlayerLinearIndex){
-	
-	
+	if(newPlayerLinearIndex > 1119){
+		newPlayerLinearIndex = newPlayerLinearIndex % 40;
+	} else if(newPlayerLinearIndex < 0){
+		newPlayerLinearIndex = 1120 + (newPlayerLinearIndex % 40);
+	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 3){
 		levelCompleted();
 	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 1){
 		return;
 	}
-	
 	
 	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
 	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
