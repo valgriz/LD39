@@ -118,7 +118,12 @@ function removePlayerBlocksCharger(){
 
 function timerTick(){
 	charger.game.percentage -= 5;
+	charger.game.battery_bar.width = 69*(charger.game.percentage/100);
 	console.log("timer: " + charger.game.percentage);
+	if(charger.game.percentage < 50){
+		console.log("heyyyyyyyy");
+		charger.game.battery_bar.animations.play('insufficient');
+	}
 	if(charger.game.percentage < 0){
 		removePlayerBlocksCharger();
 		createMenu('you_lose');
@@ -197,12 +202,12 @@ function initGame(){
 	]);
 	
 	
-	
-	
-	
-	
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
+	charger.game.battery_bar = charger.game.add.sprite(325, 55, 'battery_bar');
+	charger.game.battery_bar.animations.add('sufficient', [0], 10 , true);
+	charger.game.battery_bar.animations.add('insufficient', [1], 10 , true);
+	charger.game.battery_bar.animations.play('sufficient');
 	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
 	charger.game.background = null;
 	charger.game.dPressed = charger.game.add.sprite(119, 380, 'dPressed');
@@ -224,7 +229,6 @@ function initGame(){
 	
 	charger.game.timer = charger.game.time.create(false);
 	charger.game.timer.loop(1000, timerTick, this)
-	//charger.game.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	initKeys();
 	createBackground(0);
