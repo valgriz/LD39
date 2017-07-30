@@ -36,9 +36,11 @@ function levelCompleted(){
 
 function movePlayerToIndex(newPlayerLinearIndex){
 	if(newPlayerLinearIndex > 1119){
-		newPlayerLinearIndex = newPlayerLinearIndex % 40;
+		newPlayerLinearIndex = newPlayerLinearIndex - 1120;
 	} else if(newPlayerLinearIndex < 0){
-		newPlayerLinearIndex = 1120 + (newPlayerLinearIndex % 40);
+		var x = newPlayerLinearIndex % 40;
+		var y = Math.floor(Math.abs(newPlayerLinearIndex/40));
+		newPlayerLinearIndex = (1120 - (y * 40)) + x;
 	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 3){
 		levelCompleted();
@@ -49,12 +51,11 @@ function movePlayerToIndex(newPlayerLinearIndex){
 	
 	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
 	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
-	
-	
-	
-	
 	charger.game.playerLinearIndex = newPlayerLinearIndex;
+}
 
+function jumpPlayer(){
+	
 }
 
 function movePlayer(direction){
@@ -64,9 +65,21 @@ function movePlayer(direction){
 	} else if(direction === 'down'){
 		movePlayerToIndex(charger.game.playerLinearIndex + 40);
 	} else if(direction === 'left'){
-		movePlayerToIndex(charger.game.playerLinearIndex - 1);
+		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex - 1)/40);
+		var indexToMoveTo = charger.game.playerLinearIndex - 1;
+		if(oldIndexY != tempNewIndexY){
+				indexToMoveTo = charger.game.playerLinearIndex + 36;
+		}
+		movePlayerToIndex(indexToMoveTo);
 	} else if(direction === 'right'){
-		movePlayerToIndex(charger.game.playerLinearIndex + 1);
+		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex + 1)/40);
+		var indexToMoveTo = charger.game.playerLinearIndex + 1;
+		if(oldIndexY != tempNewIndexY){
+				indexToMoveTo = charger.game.playerLinearIndex - 36;
+		}
+		movePlayerToIndex(indexToMoveTo);
 	}
 }
 
