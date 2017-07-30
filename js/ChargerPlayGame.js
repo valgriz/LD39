@@ -97,6 +97,9 @@ function initKeys(){
 
 
 function initGame(){
+	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
+	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
+	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
 	charger.game.levels = [];
 	
 	charger.game.levels.push(
@@ -148,8 +151,6 @@ function initGame(){
 	charger.game.key.space = null;
 	charger.game.blocks = charger.game.add.group();
 	charger.game.player = null;
-	
-	//charger.game.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	initKeys();
 	createBackground(0);
