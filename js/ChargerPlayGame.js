@@ -24,6 +24,7 @@ function createGame(level){
 	}
 	
 	charger.game.world.bringToTop(charger.game.blocks);
+	charger.game.battery_bar.animations.play('suficient');
 	charger.game.timer.start();
 }
 
@@ -61,6 +62,8 @@ function keyPress(key){
 	} else if(key.keyCode === Phaser.KeyCode.SPACEBAR){
 		if(charger.game.menu != null){
 			createGame(0);
+			charger.game.battery_bar.animations.play('sufficient');
+			charger.game.battery_bar.width = 69;
 		} else {
 			console.log(charger.game);
 		}
@@ -121,13 +124,13 @@ function timerTick(){
 	charger.game.battery_bar.width = 69*(charger.game.percentage/100);
 	console.log("timer: " + charger.game.percentage);
 	if(charger.game.percentage < 50){
-		console.log("heyyyyyyyy");
 		charger.game.battery_bar.animations.play('insufficient');
 	}
 	if(charger.game.percentage < 0){
 		removePlayerBlocksCharger();
 		createMenu('you_lose');
 		charger.game.timer.stop(false);
+		charger.game.percentage = 100;
 	}
 }
 
