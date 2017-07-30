@@ -6,7 +6,19 @@ function updateGame(){
 
 function createGame(level){
 	createMenu('destroy');
+
+	charger.game.battery_bar.width = 69;
+	charger.game.battery_bar.animations.play('sufficient');
+	if(level>0){
+		charger.game.score+=charger.game.percentage;
+	}
+	charger.game.scoreText.text = "SCORE: " + charger.game.score;
 	charger.game.percentage = 100;
+	
+	if(charger.game.scoreText_screen!=null){
+		charger.game.scoreText_screen.text="";
+	}
+
 	charger.game.currentLevelIndex = level;
 	console.log("currentLevelIndex: " + charger.game.currentLevelIndex);
 	
@@ -265,7 +277,6 @@ function timerTick(){
 	charger.game.battery_bar.width = 69*(charger.game.percentage/100);
 	console.log("timer: " + charger.game.percentage);
 	if(charger.game.percentage < 50){
-		console.log("heyyyyyyyy");
 		charger.game.battery_bar.animations.play('insufficient');
 	}
 	if(charger.game.percentage < 0){
@@ -276,13 +287,10 @@ function timerTick(){
 }
 
 function initGame(){
-	
+	charger.game.score = 0;
 	charger.game.percentage = 100;
 	
 	charger.game.level = null;
-	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
-	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
-	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
 	
 	charger.game.levels = [];
 	charger.game.levels.push([
@@ -369,9 +377,11 @@ function initGame(){
 	charger.game.key.space = null;
 	charger.game.blocks = charger.game.add.group();
 	charger.game.player = null;
-	
+	charger.game.scoreText = charger.game.add.text(25, 47, 'SCORE: 0', { font: "30px VT323", fill: '#844' });
+	charger.game.scoreText_screen = null;
+
 	charger.game.timer = charger.game.time.create(false);
-	charger.game.timer.loop(1000, timerTick, this)
+	charger.game.timer.loop(1000, timerTick, this);
 	
 	initKeys();
 	createBackground(0);
@@ -447,6 +457,7 @@ function createMenu(menu){
 		charger.game.menu = charger.game.add.sprite(15, 78, 'you_win');
 	} else if(menu === 'you_lose'){
 		charger.game.menu = charger.game.add.sprite(15, 78, 'you_lose');
+		charger.game.scoreText_screen = charger.game.add.text(135, 230, charger.game.scoreText.text, { font: "45px VT323", fill: '#fff' });
 	}
 }
 
