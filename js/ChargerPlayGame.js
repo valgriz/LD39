@@ -100,7 +100,6 @@ function initGame(){
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
 	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
-	
 	charger.game.levels = [];
 	
 	charger.game.levels.push(
@@ -133,6 +132,9 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
 	
+	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
+	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
+	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
 	charger.game.background = null;
 	charger.game.dPressed = charger.game.add.sprite(119, 380, 'dPressed');
 	charger.game.dPressed.animations.add('up', [1], 10 ,true);
