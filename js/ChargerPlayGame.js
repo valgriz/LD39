@@ -47,6 +47,7 @@ function levelCompleted(){
 
 
 function movePlayerToIndex(newPlayerLinearIndex){
+	console.log("MOVING PLAYER TO " + newPlayerLinearIndex);
 	if(newPlayerLinearIndex > 1119){
 		newPlayerLinearIndex = newPlayerLinearIndex - 1120;
 	} else if(newPlayerLinearIndex < 0){
@@ -58,12 +59,15 @@ function movePlayerToIndex(newPlayerLinearIndex){
 		levelCompleted();
 	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 1){
+		console.log("returning negative one");
 		return -1;
 	}
 	
 	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
 	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
 	charger.game.playerLinearIndex = newPlayerLinearIndex;
+	
+	console.log("NAAHHHH: " + charger.game.playerLinearIndex);
 	
 	var numberOfPlacesPlayerCanMoveTo = 0;
 	if(canPlayerMoveTo(newPlayerLinearIndex - 1)){numberOfPlacesPlayerCanMoveTo++}
@@ -98,10 +102,8 @@ function canPlayerMoveTo(playerLinearIndex, verbose){
 		}
 	}
 	if((charger.game.levels[charger.game.currentLevelIndex])[playerLinearIndex] === 1){
-		console.log("RETURNING FALSE");
 		return false;
 	}
-	console.log("RETURNING TRUE");
 	return true;
 }
 
@@ -139,9 +141,12 @@ function movePlayer(direction){
 			var indexToMoveTo = charger.game.playerLinearIndex - 1;
 			if(oldIndexY != tempNewIndexY){
 					indexToMoveTo = charger.game.playerLinearIndex + 36;
+					console.log("DO THIS THING " + indexToMoveTo);
 			}
 			var numberOfRoutes =  movePlayerToIndex(indexToMoveTo);
+			console.log("STEVE: " + numberOfRoutes);
 			if(numberOfRoutes < 0){
+				movePlayerToIndex(indexToMoveTo + 1)
 				run = false;
 				return;
 			}
@@ -157,9 +162,12 @@ function movePlayer(direction){
 			var indexToMoveTo = charger.game.playerLinearIndex + 1;
 			if(oldIndexY != tempNewIndexY){
 					indexToMoveTo = charger.game.playerLinearIndex - 36;
+					console.log("DO THIS THING " + indexToMoveTo);
 			}
-			var numberOfRoutes =  movePlayerToIndex(indexToMoveTo);
+			var numberOfRoutes = movePlayerToIndex(indexToMoveTo);
+			console.log("STEVE: " + numberOfRoutes);
 			if(numberOfRoutes < 0){
+				movePlayerToIndex(indexToMoveTo - 1)
 				run = false;
 				return;
 			}
@@ -214,7 +222,7 @@ function keyPress(key){
 		if(charger.game.menu != null){
 			createGame(0);
 		} else {
-			console.log(charger.game);
+			console.log(charger.game.playerLinearIndex);
 		}
 		console.log("SPACEBAR");
 		charger.game.dPressed.animations.play('other');
@@ -352,6 +360,37 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0
+	]);
+	
+	charger.game.levels.push([
+	0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0,1,0,
+	0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,
+	1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+	1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+	0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,2,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
+	0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
+	1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,
+	0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,3,1,0,
+	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,0,
+	1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,0,
+	0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,0
 	]);
 	
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
