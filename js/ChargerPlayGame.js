@@ -27,11 +27,36 @@ function createGame(level){
 	charger.game.timer.start();
 }
 
+
+function movePlayerToIndex(newPlayerLinearIndex){
+	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
+	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
+	charger.game.playerLinearIndex = newPlayerLinearIndex;
+}
+
+function movePlayer(direction){
+	//charger.game.player = charger.game.add.sprite(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'player');
+	if(direction === 'up'){
+		movePlayerToIndex(charger.game.playerLinearIndex - 40);
+		//charger.game.player.y -= 10;
+		//movePlayerToIndex();
+	} else if(direction === 'down'){
+		movePlayerToIndex(charger.game.playerLinearIndex + 40);
+		//charger.game.player.y += 10;
+	} else if(direction === 'left'){
+		movePlayerToIndex(charger.game.playerLinearIndex - 1);
+		//charger.game.player.x -= 10;
+	} else if(direction === 'right'){
+		movePlayerToIndex(charger.game.playerLinearIndex + 1);
+		//charger.game.player.x += 10;
+	}
+}
+
 function keyPress(key){
 	if(key.keyCode === Phaser.KeyCode.UP){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.y -= 10;
+				movePlayer('up');
 			}
 		}
 		console.log("UP");
@@ -39,7 +64,7 @@ function keyPress(key){
 	} else if(key.keyCode === Phaser.KeyCode.DOWN){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.y += 10;
+				movePlayer('down');
 			}
 		}
 		console.log("DOWN");
@@ -47,14 +72,14 @@ function keyPress(key){
 	} else if(key.keyCode === Phaser.KeyCode.LEFT){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.x -= 10;
+				movePlayer('left');
 			}
 		}
 		console.log("LEFT");
 		charger.game.dPressed.animations.play('left');
 	} else if(key.keyCode === Phaser.KeyCode.RIGHT){
 		if(charger.game.menu == null){
-			charger.game.player.x += 10;
+			movePlayer('right');
 		}
 		console.log("RIGHT");
 		charger.game.dPressed.animations.play('right');
@@ -92,8 +117,6 @@ function initKeys(){
 	charger.game.key.right.onUp.add(keyRelease, this);
 	charger.game.key.space.onDown.add(keyPress, this);
 }
-
-
 
 function removePlayer(){
 	charger.game.player.destroy();
@@ -169,7 +192,8 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	]);
 	charger.game.levels.push([
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
@@ -201,7 +225,6 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0
 	]);
 	
-	
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
 	charger.game.battery_bar = charger.game.add.sprite(325, 55, 'battery_bar');
@@ -225,7 +248,6 @@ function initGame(){
 	charger.game.key.space = null;
 	charger.game.blocks = charger.game.add.group();
 	charger.game.player = null;
-	
 	
 	charger.game.timer = charger.game.time.create(false);
 	charger.game.timer.loop(1000, timerTick, this)
@@ -255,6 +277,7 @@ function createCharger(linearIndex){
 }
 
 function createPlayer(linearIndex){
+	charger.game.playerLinearIndex = linearIndex;
 	if((charger.game.player != null) || (linearIndex === 'destroy')){
 		charger.game.player.destroy();
 		charger.game.player = null;
