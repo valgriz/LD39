@@ -7,12 +7,13 @@ function updateGame(){
 function createGame(level){
 	createMenu('destroy');
 	charger.game.percentage = 100;
+	charger.game.currentLevelIndex = level;
+	console.log("currentLevelIndex: " + charger.game.currentLevelIndex);
 	
-	
+	removePlayerBlocksCharger();
 	
 	var currentLevel = charger.game.levels[level];
 	charger.game.level = level;
-	
 	for(var i = 0; i < currentLevel.length; i++){
 		if(currentLevel[i] === 1){
 			createBlock(i);
@@ -28,11 +29,66 @@ function createGame(level){
 	charger.game.timer.start();
 }
 
+function levelCompleted(){
+	console.log("Level plus one is " + charger.game.currentLevelIndex++);
+	createGame(charger.game.currentLevelIndex++);
+}
+
+
+function movePlayerToIndex(newPlayerLinearIndex){
+	if(newPlayerLinearIndex > 1119){
+		newPlayerLinearIndex = newPlayerLinearIndex - 1120;
+	} else if(newPlayerLinearIndex < 0){
+		var x = newPlayerLinearIndex % 40;
+		var y = Math.floor(Math.abs(newPlayerLinearIndex/40));
+		newPlayerLinearIndex = (1120 - (y * 40)) + x;
+	}
+	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 3){
+		levelCompleted();
+	}
+	if((charger.game.levels[charger.game.currentLevelIndex])[newPlayerLinearIndex] === 1){
+		return;
+	}
+	
+	charger.game.player.x = 15 + (10 * (newPlayerLinearIndex % 40));
+	charger.game.player.y = 78 + (10 * Math.floor(newPlayerLinearIndex / 40));
+	charger.game.playerLinearIndex = newPlayerLinearIndex;
+}
+
+function jumpPlayer(){
+	
+}
+
+function movePlayer(direction){
+	//charger.game.player = charger.game.add.sprite(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'player');
+	if(direction === 'up'){
+		movePlayerToIndex(charger.game.playerLinearIndex - 40);
+	} else if(direction === 'down'){
+		movePlayerToIndex(charger.game.playerLinearIndex + 40);
+	} else if(direction === 'left'){
+		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex - 1)/40);
+		var indexToMoveTo = charger.game.playerLinearIndex - 1;
+		if(oldIndexY != tempNewIndexY){
+				indexToMoveTo = charger.game.playerLinearIndex + 36;
+		}
+		movePlayerToIndex(indexToMoveTo);
+	} else if(direction === 'right'){
+		var oldIndexY = Math.floor(charger.game.playerLinearIndex/40);
+		var tempNewIndexY = Math.floor((charger.game.playerLinearIndex + 1)/40);
+		var indexToMoveTo = charger.game.playerLinearIndex + 1;
+		if(oldIndexY != tempNewIndexY){
+				indexToMoveTo = charger.game.playerLinearIndex - 36;
+		}
+		movePlayerToIndex(indexToMoveTo);
+	}
+}
+
 function keyPress(key){
 	if(key.keyCode === Phaser.KeyCode.UP){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.y -= 10;
+				movePlayer('up');
 			}
 		}
 		console.log("UP");
@@ -40,7 +96,7 @@ function keyPress(key){
 	} else if(key.keyCode === Phaser.KeyCode.DOWN){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.y += 10;
+				movePlayer('down');
 			}
 		}
 		console.log("DOWN");
@@ -48,14 +104,14 @@ function keyPress(key){
 	} else if(key.keyCode === Phaser.KeyCode.LEFT){
 		if(charger.game.menu == null){
 			if(charger.game.menu == null){
-				charger.game.player.x -= 10;
+				movePlayer('left');
 			}
 		}
 		console.log("LEFT");
 		charger.game.dPressed.animations.play('left');
 	} else if(key.keyCode === Phaser.KeyCode.RIGHT){
 		if(charger.game.menu == null){
-			charger.game.player.x += 10;
+			movePlayer('right');
 		}
 		console.log("RIGHT");
 		charger.game.dPressed.animations.play('right');
@@ -96,21 +152,25 @@ function initKeys(){
 	charger.game.key.space.onDown.add(keyPress, this);
 }
 
-
-
 function removePlayer(){
-	charger.game.player.destroy();
-	charger.game.player = null;
+	if(charger.game.player != null){
+		charger.game.player.destroy();
+		charger.game.player = null;
+	}
 }
 
 function removeBlocks(){
-	charger.game.blocks.destroy(true);
-	charger.game.blocks = null;
+	if(charger.game.blocks != null){
+		charger.game.blocks.destroy(true);
+		charger.game.blocks = null;
+	}
 }
 
 function removeCharger(){
-	charger.game.charger.destroy();
-	charger.game.charger = null;
+	if(charger.game.charger != null){
+		charger.game.charger.destroy();
+		charger.game.charger = null;
+	}
 }
 
 function removePlayerBlocksCharger(){
@@ -172,7 +232,8 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	]);
 	charger.game.levels.push([
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
@@ -204,7 +265,6 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0
 	]);
 	
-	
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
 	charger.game.battery_bar = charger.game.add.sprite(325, 55, 'battery_bar');
@@ -228,7 +288,6 @@ function initGame(){
 	charger.game.key.space = null;
 	charger.game.blocks = charger.game.add.group();
 	charger.game.player = null;
-	
 	
 	charger.game.timer = charger.game.time.create(false);
 	charger.game.timer.loop(1000, timerTick, this)
@@ -258,6 +317,7 @@ function createCharger(linearIndex){
 }
 
 function createPlayer(linearIndex){
+	charger.game.playerLinearIndex = linearIndex;
 	if((charger.game.player != null) || (linearIndex === 'destroy')){
 		charger.game.player.destroy();
 		charger.game.player = null;
@@ -295,8 +355,10 @@ function createBackground(background_index){
 function createMenu(menu){
 	console.log("create menu being called");
 	if((charger.game.menu != null) || (menu === 'destroy')){
-		charger.game.menu.destroy();
-		charger.game.menu = null;
+		if(charger.game.menu != null){
+			charger.game.menu.destroy();
+			charger.game.menu = null;
+		}
 	}
 	if(menu === 'main_menu'){
 		charger.game.menu = charger.game.add.sprite(15, 78, 'main_menu');
