@@ -4,24 +4,67 @@ function updateGame(){
 	
 }
 
-function checkKeys(){
+function createGame(level){
 	
+	//level array [40][28] = [1120]
+	
+	createMenu('destroy');
+	
+	var currentLevel = charger.game.levels[0];
+	
+	console.log(currentLevel);
+	
+	
+	
+	for(var i = 0; i < currentLevel.length; i++){
+		if(currentLevel[i] === 1){
+			createBlock(i);
+			//charger.game.blocks.create(15 + (10 * (i % 40)), 78 + (10 * Math.floor(i / 40)), 'block');	
+		} else if(currentLevel[i] === 2){
+			createPlayer(i);
+		} else if(currentLevel[i] === 3){
+			createCharger(i);
+		}
+	}
+	
+	charger.game.world.bringToTop(charger.game.blocks);
 }
 
 function keyPress(key){
 	if(key.keyCode === Phaser.KeyCode.UP){
+		if(charger.game.menu == null){
+			if(charger.game.menu == null){
+				charger.game.player.y -= 10;
+			}
+		}
 		console.log("UP");
 		charger.game.dPressed.animations.play('up');
 	} else if(key.keyCode === Phaser.KeyCode.DOWN){
+		if(charger.game.menu == null){
+			if(charger.game.menu == null){
+				charger.game.player.y += 10;
+			}
+		}
 		console.log("DOWN");
 		charger.game.dPressed.animations.play('down');
 	} else if(key.keyCode === Phaser.KeyCode.LEFT){
+		if(charger.game.menu == null){
+			if(charger.game.menu == null){
+				charger.game.player.x -= 10;
+			}
+		}
 		console.log("LEFT");
 		charger.game.dPressed.animations.play('left');
 	} else if(key.keyCode === Phaser.KeyCode.RIGHT){
+		if(charger.game.menu == null){
+			charger.game.player.x += 10;
+		}
 		console.log("RIGHT");
 		charger.game.dPressed.animations.play('right');
 	} else if(key.keyCode === Phaser.KeyCode.SPACEBAR){
+		if(charger.game.menu != null){
+			createGame(0);
+		}
 		console.log("SPACEBAR");
 		charger.game.dPressed.animations.play('other');
 	} else {
@@ -51,10 +94,45 @@ function initKeys(){
 	charger.game.key.space.onDown.add(keyPress, this);
 }
 
+
+
 function initGame(){
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
 	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
+	
+	charger.game.levels = [];
+	
+	charger.game.levels.push(
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,
+	0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,
+	0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+	
 	charger.game.background = null;
 	charger.game.dPressed = charger.game.add.sprite(119, 380, 'dPressed');
 	charger.game.dPressed.animations.add('up', [1], 10 ,true);
@@ -69,9 +147,42 @@ function initGame(){
 	charger.game.key.left = null;
 	charger.game.key.right = null;
 	charger.game.key.space = null;
+	charger.game.blocks = charger.game.add.group();
+	charger.game.player = null;
+	
+	//charger.game.physics.startSystem(Phaser.Physics.ARCADE);
+	
 	initKeys();
 	createBackground(0);
 	createMenu("main_menu");
+}
+
+function createBlock(linearIndex){
+	if(linearIndex != null){
+		charger.game.blocks.create(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'block');	
+	}
+}
+
+function createCharger(linearIndex){
+	if((charger.game.charger != null) || (linearIndex === 'destroy')){
+		charger.game.charger.destroy();
+		charger.game.charger = null;
+	}
+	if(linearIndex != null){
+		charger.game.charger = charger.game.add.sprite(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'charger');
+	}
+}
+
+function createPlayer(linearIndex){
+	if((charger.game.player != null) || (linearIndex === 'destroy')){
+		charger.game.player.destroy();
+		charger.game.player = null;
+	}
+	if(linearIndex != null){
+		charger.game.player = charger.game.add.sprite(15 + (10 * (linearIndex % 40)), 78 + (10 * Math.floor(linearIndex / 40)), 'player');
+		//charger.game.physics.arcade.enable([charger.game.player]);
+		//charger.game.player.enableBody = true;
+	}
 }
 
 /**
