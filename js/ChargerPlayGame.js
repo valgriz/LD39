@@ -353,7 +353,7 @@ function initGame(){
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0
 	]);
-	
+
 	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
 	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
 	charger.game.battery_bar = charger.game.add.sprite(325, 55, 'battery_bar');
@@ -379,6 +379,7 @@ function initGame(){
 	charger.game.player = null;
 	charger.game.scoreText = charger.game.add.text(25, 47, 'SCORE: 0', { font: "30px VT323", fill: '#844' });
 	charger.game.scoreText_screen = null;
+	charger.game.credits = charger.game.add.text(75, 599, 'by STEVEN MARTURANO and NGAN NGUYEN', { font: "20px VT323", fill: '#c70039' });
 
 	charger.game.timer = charger.game.time.create(false);
 	charger.game.timer.loop(1000, timerTick, this);
