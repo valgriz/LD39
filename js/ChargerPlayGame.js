@@ -295,10 +295,17 @@ function timerTick(){
 }
 
 function initGame(){
+<<<<<<< HEAD
 	charger.game.score = 0;
 	charger.game.percentage = 100;
 	
 	charger.game.level = null;
+=======
+	charger.game.phone_background = charger.game.add.sprite(0, 0, 'phone');
+	charger.game.status_bar = charger.game.add.sprite(15, 47, 'statusBar');
+	charger.game.battery = charger.game.add.sprite(322, 52, 'battery');
+	charger.game.levels = [];
+>>>>>>> steve_updates
 	
 	charger.game.levels = [];
 	charger.game.levels.push([
@@ -416,11 +423,14 @@ function initGame(){
 	charger.game.key.space = null;
 	charger.game.blocks = charger.game.add.group();
 	charger.game.player = null;
+<<<<<<< HEAD
 	charger.game.scoreText = charger.game.add.text(25, 47, 'SCORE: 0', { font: "30px VT323", fill: '#844' });
 	charger.game.scoreText_screen = null;
 
 	charger.game.timer = charger.game.time.create(false);
 	charger.game.timer.loop(1000, timerTick, this);
+=======
+>>>>>>> steve_updates
 	
 	initKeys();
 	createBackground(0);

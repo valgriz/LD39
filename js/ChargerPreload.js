@@ -15,14 +15,27 @@ charger.Preload.prototype = {
 		this.load.image('main_menu', 'assets/main_menu.png');
 		this.load.spritesheet('you_win', 'assets/you_win.png');
 		this.load.image('you_lose', 'assets/you_lose.png');
+<<<<<<< HEAD
+=======
+		this.load.image('block', 'assets/block.png');
+		this.load.image('player', 'assets/player.png');
+		this.load.image('charger', 'assets/charger.png');
+		this.load.spritesheet('dPressed', 'assets/dPressed.png', 194, 132);
+		this.load.image('battery', 'assets/Battery.png');
+		this.load.spritesheet('battery_bar', 'assets/batteryBar.png');
+>>>>>>> steve_updates
 		this.load.spritesheet('dPressed', 'assets/dPressed.png', 194, 132);
 		this.load.image('battery', 'assets/Battery.png');
 		this.load.image('block', 'assets/block.png');
 		this.load.image('player', 'assets/player.png');
 		this.load.image('charger', 'assets/charger.png');
+<<<<<<< HEAD
 		this.load.spritesheet('battery_bar', 'assets/batteryBar.png', 69, 14);
 		},
 
+=======
+	},
+>>>>>>> steve_updates
 	
 	create: function(){
 		this.state.start("PlayGame");
